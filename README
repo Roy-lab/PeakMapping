@@ -21,7 +21,8 @@ MtrunA17CP	EuGene	gene	6942	7695	.	-	.	MtrunA17CPg0492251
 MtrunA17CP	EuGene	gene	7699	8373	.	-	.	MtrunA17CPg0492261
 
 for sites (peak) file:
-head example/tmp.bed 
+head example/tmp.bed
+Chromosome  Start End Name
 MtrunA17CP	12109	13419	peak1
 MtrunA17CP	15572	16357	peak2
 MtrunA17CP	26327	26647	peak3
