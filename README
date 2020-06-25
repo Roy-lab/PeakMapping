@@ -1,0 +1,63 @@
+Compilation: g++ *.C -g -o MapPeaksToGenes 
+Usage: ./mapPeaksToGenes gfffile chromnamemap sites single|double output windowSizeUp windowSizeDown pFName
+
+This version of the mapping code has been updated to allow for an asymmetric distance in the mapping of peaks/sites to genes with the windowSizeUp and windowSizeDown arguments in the command. I've set up a working example in the example subdorectory, and the MapPeaks.sh script should assist in presenting any of the particulars.
+
+The gff file must have the following format, which was implemented for simplicity. See the full usage in MapPeaks.sh for particulars. 
+
+The example input formats for the GFF file and the peak/sites file are as follows:
+
+for GFF file
+head example/Medicago_v5_simplified.gff 
+MtrunA17CP	EuGene	gene	1	977	.	+	.	MtrunA17CPg0492171
+MtrunA17CP	EuGene	gene	28	2484	.	-	.	MtrunA17CPg0492181
+MtrunA17CP	EuGene	gene	2411	3570	.	+	.	MtrunA17CPg0492191
+MtrunA17CP	EuGene	gene	2969	3776	.	-	.	MtrunA17CPg0492201
+MtrunA17CP	EuGene	gene	3572	3697	.	+	.	MtrunA17CPg0492211
+MtrunA17CP	EuGene	gene	3825	5316	.	+	.	MtrunA17CPg0492221
+MtrunA17CP	EuGene	gene	4245	6630	.	-	.	MtrunA17CPg0492231
+MtrunA17CP	EuGene	gene	6633	6940	.	-	.	MtrunA17CPg0492241
+MtrunA17CP	EuGene	gene	6942	7695	.	-	.	MtrunA17CPg0492251
+MtrunA17CP	EuGene	gene	7699	8373	.	-	.	MtrunA17CPg0492261
+
+for sites (peak) file:
+head example/tmp.bed 
+MtrunA17CP	12109	13419	peak1
+MtrunA17CP	15572	16357	peak2
+MtrunA17CP	26327	26647	peak3
+MtrunA17CP	44209	45026	peak4
+MtrunA17CP	67225	67789	peak5
+MtrunA17CP	92994	93532	peak6
+MtrunA17CP	119261	119728	peak7
+MtrunA17Chr0c01	45417	45984	peak8
+MtrunA17Chr0c01	47724	48021	peak9
+MtrunA17Chr0c01	73389	73973	peak10
+
+If you have a file with more columns, as long as the format has a peak name string in the 4th column, you can use that file unchanged. Of course the code can be updated to reat the peak/site names from any chosen column if a user wishes. 
+
+The output information is in two files, one summarizing the mappings, and one summarizing the peaks that are not mapped. 
+
+The first output file is that of the peaks that are mapped, and it has the following format:
+
+head example/test_output.txt 
+peak1	MtrunA17CPg0492321	MtrunA17CP	12109	13419	2413
+peak1	MtrunA17CPg0492341	MtrunA17CP	12109	13419	6414
+peak1	MtrunA17CPg0492351	MtrunA17CP	12109	13419	8903
+peak2	MtrunA17CPg0492321	MtrunA17CP	15572	16356	-787
+peak2	MtrunA17CPg0492341	MtrunA17CP	15572	16356	3214
+peak2	MtrunA17CPg0492351	MtrunA17CP	15572	16356	5703
+peak2	MtrunA17CPg0492361	MtrunA17CP	15572	16356	8423
+peak3	MtrunA17CPg0492401	MtrunA17CP	26327	26647	1710
+peak3	MtrunA17CPg0492411	MtrunA17CP	26327	26647	2586
+peak3	MtrunA17CPg0492421	MtrunA17CP	26327	26647	2664
+
+1. peak name
+2. gene name
+3-5. peak coodinates in standard formatting of chr/start/stop
+6. distance relative to gene TSS, with + values reflecting upstream mapping. 
+
+All mappings are done from the center of the peak/site relative to the gene TSS. 
+
+If a given peak is mapped to the given wiindow of more than one gene TSS, then it will be listed as mapped to each of those genes. 
+
+The second output file of peaks/sites that are not mapped to genes is in pFName, a list of the non-mapped peaks. 
